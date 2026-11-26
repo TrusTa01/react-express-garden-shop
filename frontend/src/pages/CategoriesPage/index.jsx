@@ -1,31 +1,52 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchCategories } from '../../store/slices/categoriesSlice'; // Импорт thunk
-import CategoryCard from '../../components/CategoryCard'; // Импорт компонента карточки
+import { Link } from 'react-router-dom';
+import { useCatalog } from '../../hooks/useCatalog';
+import { usePageTitle } from '../../hooks/usePageTitle';
+import AsyncState from '../../components/AsyncState';
+import Container from '../../components/ui/Container';
+import PageHeader from '../../components/PageHeader';
+import { isOnSale } from '../../utils/price';
+import Button from '../../components/ui/Button';
+import CategoryGrid from '../../components/CategoryGrid';
 import styles from './CategoriesPage.module.css';
 
 const CategoriesPage = () => {
-  const dispatch = useDispatch();
-  const { list: categories, status, error } = useSelector((state) => state.categories);
-
-  useEffect(() => {
-    if (status === 'idle') {
-      dispatch(fetchCategories()); // Загружаем все категории
-    }
-  }, [dispatch, status]);
+  usePageTitle('Categories');
+  const { categories, products, status, error, retry } = useCatalog();
 
   return (
-    <div className={styles.categoriesPage}>
-      <h1>Categories</h1>
-      {status === 'loading' && <p>Loading categories...</p>}
-      {error && <p>Error loading categories: {error}</p>}
-      {status === 'succeeded' && categories.length === 0 && <p>No categories found.</p>}
-      <div className={styles.categoriesGrid}>
-        {categories.map((category) => (
-          <CategoryCard key={category.id} category={category} />
-        ))}
-      </div>
-    </div>
+    <AsyncState status={status} error={error} retry={retry} loadingText="Loading categories…">
+      {() => (
+        <>
+          <PageHeader
+            title="Categories"
+            breadcrumbs={[{ label: 'Home', to: '/' }, { label: 'Categories' }]}
+            meta={`${categories.length} categories · ${products.length} products`}
+          >
+            Browse the shop by what you are growing or decorating.
+          </PageHeader>
+          <Container>
+            <CategoryGrid categories={categories} products={products} />
+            <aside className={styles.cta} aria-label="More ways to shop">
+              <div>
+                <h2 className={styles.ctaTitle}>Not sure what you need?</h2>
+                <p className={styles.ctaText}>
+                  Browse the full catalog in one list, or see the {products.filter(isOnSale).length} items on sale
+                  right now.
+                </p>
+              </div>
+              <div className={styles.ctaActions}>
+                <Button as={Link} to="/discounted-items" variant="accent" size="lg">
+                  Shop the sale
+                </Button>
+                <Button as={Link} to="/products" variant="secondary" size="lg">
+                  All products
+                </Button>
+              </div>
+            </aside>
+          </Container>
+        </>
+      )}
+    </AsyncState>
   );
 };
 

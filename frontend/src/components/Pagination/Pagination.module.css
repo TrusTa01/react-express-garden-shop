@@ -1,36 +1,66 @@
-.paginationContainer {
+.pagination {
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
   align-items: center;
-  margin-top: 40px;
-  gap: 10px;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-10);
 }
 
-.pageButton {
-  padding: 10px 15px;
-  border: 1px solid var(--color-text-dark);
-  border-radius: 5px;
-  background-color: var(--color-text-light);
-  color: var(--color-text-dark);
-  font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+.pages {
+  display: flex;
+  gap: var(--space-2);
 }
 
-.pageButton:hover:not(.active):not(.disabled) {
-  background-color: var(--color-light-gray);
-  border-color: var(--color-green);
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  min-width: var(--control-height);
+  height: var(--control-height);
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-weight: var(--weight-semibold);
+  transition:
+    background-color var(--duration-fast) var(--ease),
+    border-color var(--duration-fast) var(--ease);
 }
 
-.pageButton.active {
-  background-color: var(--color-light-gray);
-  color: white;
-  border-color: var(--color-green);
-  font-weight: 600;
+.button:hover:not(:disabled):not(.active) {
+  border-color: var(--color-accent);
+  color: var(--color-accent-strong);
 }
 
-.pageButton.disabled {
-  opacity: 0.6;
+/* Current page: white on the derived vermilion (4.67:1). */
+.active {
+  border-color: var(--color-accent-deep);
+  background: var(--color-accent-deep);
+  color: var(--color-white);
+  box-shadow: 0 6px 14px rgb(217 53 42 / 0.28);
+  cursor: default;
+}
+
+.button:disabled {
+  color: var(--color-text-muted);
+  background: transparent;
   cursor: not-allowed;
-  background-color: var(--color-lighter-gray);
+  opacity: 0.6;
+}
+
+@media (max-width: 599px) {
+  .stepLabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .step {
+    padding: 0;
+  }
 }

@@ -1,250 +1,350 @@
-/* Hero секция */
-.heroSection {
-  background: url("/public/assets/images/hero-background.jpg") no-repeat center
-    center/cover;
-  height: 600px;
-  display: flex;
-  align-items: center;
-  padding-left: 30px;
-  margin-top: 0;
-  max-width: var(--max-content-width);
-  margin: 0px auto;
+.section {
+  margin-top: var(--section-gap);
 }
 
-.heroContent {
-  max-width: 700px;
-}
-
-.heroContent h1 {
-  font-size: 4em;
-  margin-bottom: 20px;
-  line-height: 1.1;
-  font-weight: 700;
-  color: var(--color-text-light);
-  margin-left: 10px;
-}
-
-.checkOutButton {
-  background-color: var(--color-primary-green);
-  color: var(--color-text-light);
-  width: 200px;
-  height: 50px;
-  padding: 15px 30px;
-  border-radius: 6px;
-  font-weight: 600;
-  font-size: 1.1em;
-  transition: background-color 0.3s ease;
-  display: inline-block;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 10px;
-}
-
-/*  для Categories и Sales */
-.sectionHeader {
-  max-width: 1440px;
-  margin: 40px auto 20px;
-  padding: 0 40px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  justify-content: flex-end;
-  border-bottom: 1px solid var(--light-gray);
-  padding-bottom: 15px;
-}
-
-.sectionHeader h2 {
-  font-size: 2.5em;
+/* ---------- Hero: full-bleed photo under a bottle-green wash ---------- */
+.hero {
+  --color-focus: var(--color-focus-inverse);
   position: relative;
-  margin-right: 20px;
-}
-
-.sectionHeader h2::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -15px;
-  width: 100px;
-  height: 4px;
-  background-color: var(--primary-green);
-}
-
-.divider {
-  height: 1px;
-  background-color: var(--color-light-gray);
-  flex-grow: 1; /* <--- Заставляет черту занимать все доступное пространство */
-  margin-left: 20px;
-  margin-right: 0;
-  min-width: 10px; /* Минимальная ширина, чтобы не исчезла при очень узком пространстве */
-}
-
-.categoriesTitle,
-.salesTitle {
-  font-size: 45px;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: var(--color-text-dark);
-  margin: 0;
-  padding-bottom: 8px;
-  position: relative;
-  margin-left: 5px; /* Отступ слева для выравнивания с кнопкой */
-}
-
-.salesTitle {
-  margin-left: 10px;
-}
-
-/* кнопки для Categories и Sales */
-
-.categoriesButton,
-.salesButton {
-  background-color: transparent;
-  color: var(--color-light-gray);
-  border: 1px solid var(--color-light-gray);
-  border-radius: 10px;
-  padding: 10px 20px;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-right: 10px;
-  appearance: none;
-  outline: none;
-  box-shadow: none;
-  box-sizing: border-box;
-}
-
-.salesButton {
-  height: 40px;
-  width: 120px;
-}
-
-.categoriesButton:hover,
-.salesButton:hover {
-  background-color: var(--primary-green);
-  color: var(--white);
-}
-
-.categoriesButton:hover,
-.salesButton:hover {
-  background-color: var(--primary-green);
-  color: var(--white);
-}
-
-.allCategoriesLink:hover,
-.allSalesLink:hover {
-  color: var(--primary-green);
-}
-
-.categoriesGrid {
-  max-width: 1420px;
-  display: grid;
-  margin-inline: 10px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 0px;
-  justify-content: center;
-  margin: 40px auto;
-}
-
-/* Products Grid для Sales Section */
-.productsGrid {
-  max-width: 1440px;
-  margin: 0 auto 60px;
-  padding: 0 55px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  justify-content: center;
-}
-
-/* Форма */
-
-.discountFormSection {
-  position: relative;
-  border-radius: 10px;
-  overflow: hidden;
-  box-sizing: border-box;
-  margin-inline: 50px;
-  background-image: url("/public/assets/images/form-image.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  min-height: 480px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  width: 1350px;
-  margin: 60px auto;
-}
-
-.discountForm {
-  position: absolute;
-  top: 60%;
-  right: 100px;
-  transform: translateY(-50%);
+  isolation: isolate;
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  width: 350px;
-  padding: 25px;
-  border-radius: 8px;
-  z-index: 2;
-  max-width: calc(100% - 40px);
+  min-height: clamp(560px, 46vw + 140px, 720px);
+  overflow: hidden;
+  background: var(--color-green);
+  color: var(--color-bone);
 }
 
-.discountInput {
-  width: 120%;
-  padding: 12px 15px;
-  color: var(--color-text-light);
-  border: 1px solid var(--color-text-light);
-  background-color: transparent;
-  border-radius: 6px;
-  font-size: 16px;
-  padding-left: 20px;
+.heroImage {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 70% 50%;
 }
 
-.discountInput::placeholder {
-  color: var(--color-text-light);
+/* Solid green under the text column, fading out to show the flowers on the right. */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgb(15 55 43 / 0.96) 0%, rgb(15 55 43 / 0.9) 38%, rgb(15 55 43 / 0.35) 72%, rgb(15 55 43 / 0.1) 100%),
+    linear-gradient(0deg, rgb(10 39 30 / 0.6) 0%, rgb(10 39 30 / 0) 30%);
 }
 
-.discountInput:focus {
-  outline: none;
-  color: var(--color-text-light);
+.heroInner {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  padding-block: var(--space-16);
 }
 
-.discountSubmitButton {
-  padding: 12px 20px;
-  color: var(--color-text-dark);
-  border: var(--color-text-light);
-  border-radius: 6px;
-  font-size: 18px;
+.heroText {
+  max-width: 640px;
+}
+
+.heroTitle {
+  font-size: var(--text-display);
   font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: 120%;
-  align-self: flex-start;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--color-white);
 }
 
-.requestSubmitted {
-  color: var(--color-primary-green);
-  font-size: 18px;
+.heroLead {
+  max-width: 40ch;
+  margin-top: var(--space-6);
+  font-size: clamp(1.0625rem, 0.95rem + 0.5vw, 1.3125rem);
+  line-height: 1.5;
+}
+
+.heroActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+}
+
+.heroFacts {
+  margin-top: var(--space-5);
+  color: var(--color-green-soft);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+}
+
+.heroBar {
+  border-top: 1px solid rgb(239 231 218 / 0.18);
+  background: rgb(10 39 30 / 0.72);
+  backdrop-filter: blur(6px);
+}
+
+.benefits {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-6);
+  padding-block: var(--space-5);
+}
+
+.benefit {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.benefitIcon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
+.benefitTitle {
+  display: block;
+  font-weight: var(--weight-semibold);
+  color: var(--color-white);
+}
+
+.benefitText {
+  display: block;
+  color: var(--color-green-soft);
+  font-size: var(--text-sm);
+}
+
+/* ---------- Category strip: tall photo tiles ---------- */
+.categoryStrip {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+
+.categoryTile {
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 16px;
+  background: var(--color-green);
+  color: var(--color-white);
+  text-decoration: none;
+}
+
+.categoryImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 600ms var(--ease);
+}
+
+.categoryTile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgb(10 39 30 / 0.9) 0%, rgb(10 39 30 / 0.45) 38%, rgb(10 39 30 / 0) 62%);
+}
+
+.categoryText {
+  position: absolute;
+  left: var(--space-5);
+  right: var(--space-5);
+  bottom: var(--space-5);
+  z-index: 1;
+  display: grid;
+  gap: 2px;
+}
+
+.categoryName {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-size: clamp(1.375rem, 1.1rem + 0.6vw, 1.75rem);
   font-weight: 600;
+  line-height: 1.1;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 6px;
+  transition: text-decoration-color var(--duration-base) var(--ease);
+}
+
+.categoryCount {
+  color: var(--color-bone);
+  font-size: var(--text-sm);
+}
+
+.categoryTile:hover .categoryImage {
+  transform: scale(1.05);
+}
+
+.categoryTile:hover .categoryName {
+  text-decoration-color: var(--color-accent);
+}
+
+/* ---------- Promo band: full-width vermilion ---------- */
+.promo {
+  --color-focus: var(--color-white);
+  margin-top: var(--section-gap);
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
+.promoInner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6) var(--space-10);
+  padding-block: clamp(2.5rem, 1.8rem + 2.5vw, 4rem);
+}
+
+.promoTitle {
+  max-width: 24ch;
+  font-size: clamp(2rem, 1.2rem + 3vw, 3.75rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+}
+
+/* 19px bold: large text, so white on vermilion passes AA. */
+.promoText {
+  margin-top: var(--space-3);
+  font-size: var(--text-label-lg);
+  font-weight: var(--weight-bold);
+}
+
+.promoButton {
+  flex-shrink: 0;
+  min-height: 56px;
+  padding-inline: var(--space-10);
+}
+
+/* ---------- Coupon: green panel + white form ---------- */
+.coupon {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.couponText {
+  --color-focus: var(--color-focus-inverse);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2rem, 1rem + 4vw, 4rem);
+  background: var(--color-green);
+  color: var(--color-bone);
+}
+
+.couponTitle {
+  max-width: 12ch;
+  font-size: clamp(2.25rem, 1.4rem + 3vw, 3.75rem);
+  font-weight: 600;
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  color: var(--color-white);
+}
+
+.couponLead {
+  max-width: 40ch;
+  margin-top: var(--space-5);
+  color: var(--color-bone);
+  font-size: var(--text-lg);
+}
+
+.couponCard {
+  padding: clamp(1.5rem, 1rem + 2.5vw, 3.5rem);
+  background: var(--color-surface);
+}
+
+.couponSuccess {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  padding-block: var(--space-6);
   text-align: center;
-  padding: 8px;
-  background-color: var(--color-text-light);
-  border-radius: 4px;
-  width: 120%;
 }
 
-/* --- Медиа-запросы для адаптации на больших экранах --- */
+.couponSuccess p {
+  color: var(--color-text-muted);
+}
 
-@media (min-width: 1441px) {
-  .discountFormSection {
-    max-width: var(--max-content-width);
+.couponSuccessIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-pill);
+  background: var(--color-success-tint);
+  color: var(--color-success);
+}
+
+@media (max-width: 1023px) {
+  .benefits {
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-3);
+    padding-block: var(--space-4);
+  }
+}
+
+@media (max-width: 899px) {
+  .hero::before {
+    background: linear-gradient(180deg, rgb(15 55 43 / 0.82) 0%, rgb(15 55 43 / 0.9) 60%, rgb(10 39 30 / 0.96) 100%);
+  }
+
+  .heroInner {
+    padding-block: var(--space-12) var(--space-10);
+  }
+
+  /* The strip scrolls sideways inside its own box; the page never does. */
+  .categoryStrip {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 40%;
+    gap: var(--space-3);
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    /* room for the focus ring: overflow-x clips vertically too */
+    margin-top: calc(var(--space-2) * -1);
+    padding-block: var(--space-2);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+
+  .categoryStrip li {
+    scroll-snap-align: start;
+  }
+
+  .coupon {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 599px) {
+  .heroActions > * {
+    flex: 1 1 100%;
+  }
+
+  .categoryStrip {
+    grid-auto-columns: 64%;
+  }
+
+  .promoButton {
+    width: 100%;
+  }
+
+  .coupon {
+    margin-inline: calc(var(--gutter) * -1);
+    border-radius: 0;
   }
 }

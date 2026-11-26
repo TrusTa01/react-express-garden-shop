@@ -1,119 +1,86 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+import { getEffectivePrice } from '../../utils/price';
 
-// Логика для Local Storage
+const STORAGE_KEY = 'cart';
+// The order API accepts at most 999 of one product.
+export const MAX_QUANTITY = 999;
 
-// Функция для загрузки состояния корзины из Local Storage
-const loadCartFromLocalStorage = () => {
+const emptyCart = () => ({ items: [], totalQuantity: 0, totalAmount: 0 });
+
+const loadCart = () => {
   try {
-    const serializedCart = localStorage.getItem("cart");
-    if (serializedCart === null) {
-      // Возвращаем начальное состояние, если ничего нет в Local Storage
-      return { items: [], totalQuantity: 0, totalAmount: 0 };
-    }
-    const cart = JSON.parse(serializedCart);
-    // Проверяем наличие всех необходимых полей для безопасности
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return emptyCart();
+    const cart = JSON.parse(saved);
     return {
-      items: cart.items || [],
+      items: Array.isArray(cart.items) ? cart.items : [],
       totalQuantity: cart.totalQuantity || 0,
       totalAmount: cart.totalAmount || 0,
     };
-  } catch (error) {
-    console.warn("Ошибка при загрузке корзины из Local Storage:", error);
-    // Возвращаем начальное состояние в случае ошибки чтения/парсинга
-    return { items: [], totalQuantity: 0, totalAmount: 0 };
+  } catch {
+    return emptyCart();
   }
 };
 
-// Функция для сохранения состояния корзины в Local Storage
-const saveCartToLocalStorage = (state) => {
+const saveCart = (state) => {
   try {
-    const serializedCart = JSON.stringify(state);
-    localStorage.setItem("cart", serializedCart);
-  } catch (error) {
-    console.warn("Ошибка при сохранении корзины в Local Storage:", error);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // Storage can be full or disabled; the cart still works for this session.
   }
 };
 
-// Начальное состояние для корзины (загружаем из Local Storage)
-const initialState = loadCartFromLocalStorage();
+const recalc = (state) => {
+  state.totalQuantity = state.items.reduce((sum, item) => sum + item.quantity, 0);
+  state.totalAmount = state.items.reduce(
+    (sum, item) => sum + getEffectivePrice(item.product) * item.quantity,
+    0,
+  );
+  saveCart(state);
+};
 
 const cartSlice = createSlice({
-  name: "cart",
-  initialState,
+  name: 'cart',
+  initialState: loadCart,
   reducers: {
-    updateTotals: (state) => {
-      state.totalQuantity = state.items.reduce(
-        (total, item) => total + item.quantity,
-        0
-      );
-      state.totalAmount = state.items.reduce(
-        (total, item) =>
-          total +
-          (item.product.discont_price !== null &&
-          item.product.discont_price !== undefined
-            ? item.product.discont_price
-            : item.product.price) *
-            item.quantity,
-        0
-      );
-    },
-
-    addItemToCart: (state, action) => {
-      const newItem = action.payload; // Это будет объект продукта
-      const existingItem = state.items.find(
-        (item) => item.product.id === newItem.id
-      );
-
-      if (!existingItem) {
-        state.items.push({ product: newItem, quantity: 1 });
-      } else {
-        existingItem.quantity++;
-      }
-      cartSlice.caseReducers.updateTotals(state); // Вызываем вспомогательный редьюсер для обновления итогов
-      saveCartToLocalStorage(state); // Сохраняем в Local Storage
-    },
-
-    removeItemFromCart: (state, action) => {
-      const id = action.payload; // Это будет ID продукта
-      const existingItem = state.items.find((item) => item.product.id === id);
-
-      if (existingItem) {
-        state.items = state.items.filter((item) => item.product.id !== id);
-      }
-      cartSlice.caseReducers.updateTotals(state); // Вызываем вспомогательный редьюсер для обновления итогов
-      saveCartToLocalStorage(state); // Сохраняем в Local Storage
-    },
-
-    decreaseItemQuantity: (state, action) => {
-      const id = action.payload;
-      const existingItem = state.items.find((item) => item.product.id === id);
-
-      if (existingItem) {
-        if (existingItem.quantity === 1) {
-          state.items = state.items.filter((item) => item.product.id !== id);
+    addItemToCart: {
+      reducer(state, action) {
+        const { product, quantity } = action.payload;
+        const existing = state.items.find((item) => item.product.id === product.id);
+        if (existing) {
+          existing.quantity = Math.min(existing.quantity + quantity, MAX_QUANTITY);
         } else {
-          existingItem.quantity--;
+          state.items.push({ product, quantity: Math.min(quantity, MAX_QUANTITY) });
         }
-      }
-      cartSlice.caseReducers.updateTotals(state); // Вызываем вспомогательный редьюсер для обновления итогов
-      saveCartToLocalStorage(state); // Сохраняем в Local Storage
+        recalc(state);
+      },
+      prepare(product, quantity = 1) {
+        return { payload: { product, quantity } };
+      },
     },
 
-    // Очистка всей корзины после заказа
-    clearCart: (state) => {
+    decreaseItemQuantity(state, action) {
+      const existing = state.items.find((item) => item.product.id === action.payload);
+      if (!existing) return;
+      if (existing.quantity <= 1) {
+        state.items = state.items.filter((item) => item.product.id !== action.payload);
+      } else {
+        existing.quantity -= 1;
+      }
+      recalc(state);
+    },
+
+    removeItemFromCart(state, action) {
+      state.items = state.items.filter((item) => item.product.id !== action.payload);
+      recalc(state);
+    },
+
+    clearCart(state) {
       state.items = [];
-      state.totalQuantity = 0;
-      state.totalAmount = 0;
-      saveCartToLocalStorage(state); // Сохраняем в Local Storage
+      recalc(state);
     },
   },
 });
 
-export const {
-  addItemToCart,
-  removeItemFromCart,
-  decreaseItemQuantity,
-  clearCart,
-} = cartSlice.actions;
-
+export const { addItemToCart, decreaseItemQuantity, removeItemFromCart, clearCart } = cartSlice.actions;
 export default cartSlice.reducer;

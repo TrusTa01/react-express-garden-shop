@@ -1,0 +1,97 @@
+.region {
+  position: fixed;
+  right: var(--gutter);
+  bottom: var(--gutter);
+  z-index: var(--z-toast);
+  display: grid;
+  gap: var(--space-3);
+  width: min(400px, calc(100vw - 2 * var(--gutter)));
+  pointer-events: none;
+  transition: bottom var(--duration-base) var(--ease);
+}
+
+/* Bottle-green toast with bone text (10.7:1); the icon carries the status colour. */
+.toast {
+  --color-focus: var(--color-focus-inverse);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-2) var(--space-2) var(--space-3);
+  border-radius: var(--radius-lg);
+  background: var(--color-green);
+  color: var(--color-bone);
+  box-shadow: var(--shadow-lg);
+  pointer-events: auto;
+  animation: toast-in var(--duration-base) var(--ease) both;
+}
+
+.icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: var(--color-white);
+}
+
+.error .icon {
+  background: var(--color-error-tint);
+  color: var(--color-error);
+}
+
+.message {
+  flex: 1;
+  min-width: 0;
+  color: var(--color-white);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  line-height: 1.4;
+}
+
+.close {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: var(--control-height);
+  height: var(--control-height);
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-bone);
+}
+
+.close:hover {
+  background: rgb(239 231 218 / 0.14);
+  color: var(--color-white);
+}
+
+@media (max-width: 599px) {
+  .region {
+    left: var(--gutter);
+    right: var(--gutter);
+    width: auto;
+  }
+}
+
+/* Product page on phones: stay above the sticky "Add to cart" bar. */
+@media (max-width: 899px) {
+  :global(body[data-sticky-bar='true']) .region {
+    bottom: calc(var(--gutter) + 84px);
+  }
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

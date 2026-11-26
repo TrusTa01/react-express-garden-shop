@@ -1,0 +1,59 @@
+.price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: var(--space-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.current,
+.sale {
+  font-weight: var(--weight-bold);
+  color: var(--color-text);
+}
+
+.sale {
+  color: var(--color-sale-strong);
+}
+
+.old {
+  color: var(--color-text-muted);
+  font-weight: var(--weight-regular);
+}
+
+.sm .current,
+.sm .sale {
+  font-size: var(--text-base);
+}
+
+.sm .old {
+  font-size: var(--text-sm);
+}
+
+.md .current,
+.md .sale {
+  font-size: var(--text-lg);
+}
+
+/* 20px bold = large text, so the real vermilion passes AA on white (4.16:1). */
+.md .sale {
+  font-size: var(--text-xl);
+  color: var(--color-accent);
+}
+
+.md .old {
+  font-size: var(--text-sm);
+}
+
+.lg .current,
+.lg .sale {
+  font-size: var(--text-3xl);
+}
+
+.lg .sale {
+  color: var(--color-accent);
+}
+
+.lg .old {
+  font-size: var(--text-lg);
+}

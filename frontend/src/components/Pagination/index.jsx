@@ -1,44 +1,46 @@
-import React from 'react';
+import { ChevronLeftIcon, ChevronRightIcon } from '../Icons';
 import styles from './Pagination.module.css';
 
-const Pagination = ({ totalPages, currentPage, onPageChange }) => {
-  const pageNumbers = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i);
-  }
-
-  // Определяем, должны ли кнопки Предыдущая и Следующая быть активными
-  const canGoPrev = currentPage > 1;
-  const canGoNext = currentPage < totalPages;
+const Pagination = ({ page, totalPages, onChange }) => {
+  if (totalPages <= 1) return null;
+  const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (
-    <div className={styles.paginationContainer}>
+    <nav className={styles.pagination} aria-label="Pagination">
       <button
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={!canGoPrev}
-        className={`${styles.pageButton} ${!canGoPrev ? styles.disabled : ''}`}
+        type="button"
+        className={`${styles.button} ${styles.step}`}
+        onClick={() => onChange(page - 1)}
+        disabled={page === 1}
       >
-        Previous
+        <ChevronLeftIcon size={18} />
+        <span className={styles.stepLabel}>Previous</span>
       </button>
-
-      {pageNumbers.map(number => (
-        <button
-          key={number}
-          onClick={() => onPageChange(number)}
-          className={`${styles.pageButton} ${number === currentPage ? styles.active : ''}`}
-        >
-          {number}
-        </button>
-      ))}
-
+      <ul className={styles.pages}>
+        {pages.map((number) => (
+          <li key={number}>
+            <button
+              type="button"
+              className={`${styles.button} ${number === page ? styles.active : ''}`}
+              aria-current={number === page ? 'page' : undefined}
+              aria-label={`Page ${number}`}
+              onClick={() => onChange(number)}
+            >
+              {number}
+            </button>
+          </li>
+        ))}
+      </ul>
       <button
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={!canGoNext}
-        className={`${styles.pageButton} ${!canGoNext ? styles.disabled : ''}`}
+        type="button"
+        className={`${styles.button} ${styles.step}`}
+        onClick={() => onChange(page + 1)}
+        disabled={page === totalPages}
       >
-        Next
+        <span className={styles.stepLabel}>Next</span>
+        <ChevronRightIcon size={18} />
       </button>
-    </div>
+    </nav>
   );
 };
 

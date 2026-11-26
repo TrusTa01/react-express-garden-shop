@@ -1,192 +1,162 @@
-import React, { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearCart } from '../../store/slices/cartSlice';
+import { DEMO, postJson } from '../../config/api';
+import { formatPrice } from '../../utils/price';
+import { usePageTitle } from '../../hooks/usePageTitle';
+import Container from '../../components/ui/Container';
+import Button from '../../components/ui/Button';
+import PageHeader from '../../components/PageHeader';
+import StatusMessage from '../../components/StatusMessage';
+import ContactForm from '../../components/ContactForm';
+import Modal from '../../components/Modal';
+import { CartIcon, CheckIcon, ChevronLeftIcon, TruckIcon } from '../../components/Icons';
+import CartItem from './CartItem';
+import styles from './CartPage.module.css';
 
-import {
-  removeItemFromCart,
-  decreaseItemQuantity,
-  addItemToCart,
-  clearCart,
-} from "../../store/slices/cartSlice";
-import styles from "./CartPage.module.css";
+const BREADCRUMBS = [{ label: 'Home', to: '/' }, { label: 'Cart' }];
+// Same threshold as the store promise "Free delivery on orders over $50".
+const FREE_DELIVERY_FROM = 50;
 
-const CartPage = ({ showNotification }) => {
+const itemsLabel = (count) => `${count} ${count === 1 ? 'item' : 'items'}`;
+
+const CartPage = () => {
+  usePageTitle('Cart');
   const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cart.items);
-  const totalAmount = useSelector((state) => state.cart.totalAmount);
-
-  const [showOrderSuccessModal, setShowOrderSuccessModal] = useState(false);
+  const { items, totalQuantity, totalAmount } = useSelector((state) => state.cart);
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const freeDelivery = totalAmount >= FREE_DELIVERY_FROM;
+  const progress = Math.min(100, Math.round((totalAmount / FREE_DELIVERY_FROM) * 100));
 
-  const handleRemoveItem = (productId) => {
-    dispatch(removeItemFromCart(productId));
-  };
-
-  const handleDecreaseQuantity = (productId) => {
-    dispatch(decreaseItemQuantity(productId));
-  };
-
-  const handleIncreaseQuantity = (product) => {
-    dispatch(addItemToCart(product));
-  };
-
-  const handleClearCart = () => {
+  const placeOrder = async (contact) => {
+    await postJson('/order/send', {
+      ...contact,
+      products: items.map((item) => ({ id: item.product.id, quantity: item.quantity })),
+    });
     dispatch(clearCart());
-  };
-
-  const navigate = useNavigate();
-  
-  // Функция для обработки клика по изображению товара
-  const handleImageClick = (productId) => {
-    if (productId) {
-      navigate(`/products/${productId}`); // Переходим на страницу товара
-    } else {
-      console.warn('Product ID is undefined for navigation.');
-    }
-  };
-
-  const handleOrderSubmit = (e) => {
-    e.preventDefault();
-    console.log("Форма заказа отправлена (логика пока не подключена)");
-
-    setShowOrderSuccessModal(true);
     setOrderPlaced(true);
-    dispatch(clearCart());
   };
 
-  const handleCloseModal = () => {
-    setShowOrderSuccessModal(false);
-  };
+  const modal = (
+    <Modal
+      open={orderPlaced}
+      onClose={() => setOrderPlaced(false)}
+      title={DEMO ? 'Order form works!' : 'Thank you for your order!'}
+      icon={<CheckIcon size={32} />}
+    >
+      <p className={styles.modalText}>
+        {DEMO
+          ? 'This is a demo, so the order was not sent. In the real store, a manager would now call you to confirm the details.'
+          : 'Your order has been placed. A manager will call you shortly to confirm the details.'}
+      </p>
+      <Button as={Link} to="/products" variant="accent" size="lg" block onClick={() => setOrderPlaced(false)}>
+        Continue shopping
+      </Button>
+    </Modal>
+  );
 
-  if (cartItems.length === 0 && !orderPlaced) {
+  if (items.length === 0) {
     return (
-      <section className={styles.emptyCartSection}>
-        <div className={styles.sectionHeader}>
-          <h3 className={styles.cartTitle}>Shopping cart</h3>
-          <div className={styles.divider}></div>
-          <button
-            className={styles.backButton}
-            onClick={() => navigate("/")}
-          >
-            Back to the store
-          </button>
-        </div>
-        <p className={styles.emptyCartText}>Looks like you have no items in your basket currently.</p>
-        <button
-          className={styles.continueShoppingButton}
-          onClick={() => navigate("/")}
-        >
-          Continue shopping
-        </button>
-      </section>
+      <>
+        <PageHeader title="Shopping cart" breadcrumbs={BREADCRUMBS} />
+        <Container>
+          <StatusMessage
+            icon={<CartIcon size={30} />}
+            title="Your cart is empty"
+            text="Looks like you haven’t added anything yet. Our sale is a good place to start."
+            action={
+              <>
+                <Button as={Link} to="/products" variant="accent" size="lg">
+                  Start shopping
+                </Button>
+                <Button as={Link} to="/discounted-items" variant="secondary" size="lg">
+                  View sale
+                </Button>
+              </>
+            }
+          />
+        </Container>
+        {modal}
+      </>
     );
   }
 
   return (
-    <div className={styles.cartPage}>
-      {showOrderSuccessModal && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.successModal}>
-            <button className={styles.closeModalButton} onClick={handleCloseModal}>&times;</button>
-            <h3 className={styles.modalTitle}>Congratulations!</h3>
-            <p className={styles.modalText}>Your order has been successfully placed on the website.</p>
-            <p className={styles.modalText}>A manager will contact you shortly to confirm your order.</p>
-          </div>
-        </div>
-      )}
+    <>
+      <PageHeader title="Shopping cart" breadcrumbs={BREADCRUMBS} meta={itemsLabel(totalQuantity)} />
+      <Container>
+        <div className={styles.layout}>
+          <section aria-label="Items in your cart" className={styles.itemsColumn}>
+            <ul className={styles.items}>
+              {items.map((item) => (
+                <CartItem key={item.product.id} item={item} />
+              ))}
+            </ul>
+            <Link to="/products" className={styles.continue}>
+              <ChevronLeftIcon size={18} />
+              Continue shopping
+            </Link>
+          </section>
 
-      <div className={styles.fullCartHeader}>
-        <h2 className={styles.cartTitleFull}>Shopping Cart</h2>
-        <div className={styles.divider}></div>
-        <Link to="/" className={styles.fullCartBackLink}>Back to the store</Link>
-      </div>
+          <aside className={styles.summary} aria-labelledby="summary-title">
+            <h2 id="summary-title" className={styles.summaryTitle}>
+              Order summary
+            </h2>
+            <dl className={styles.totals}>
+              <div className={styles.totalRow}>
+                <dt>Subtotal ({itemsLabel(totalQuantity)})</dt>
+                <dd>{formatPrice(totalAmount)}</dd>
+              </div>
+              <div className={styles.totalRow}>
+                <dt>Delivery</dt>
+                <dd className={freeDelivery ? styles.free : undefined}>{freeDelivery ? 'Free' : 'Calculated by manager'}</dd>
+              </div>
+            </dl>
 
-      <div className={styles.cartContentWrapper}>
-        <div className={styles.cartItemsList}>
-          {cartItems.map((item) => (
-            <div key={item.product.id} className={styles.cartItem}>
-              {/* Добавляем onClick передавая ID продукта */}
+            <div className={styles.delivery}>
+              <p className={styles.deliveryText}>
+                <TruckIcon size={18} />
+                {freeDelivery ? (
+                  'Delivery is free for this order.'
+                ) : (
+                  <span>
+                    Add <strong>{formatPrice(FREE_DELIVERY_FROM - totalAmount)}</strong> more for free delivery.
+                  </span>
+                )}
+              </p>
               <div
-                className={styles.itemImageContainer}
-                onClick={() => handleImageClick(item.product.id)}
+                className={styles.progress}
+                role="progressbar"
+                aria-label="Progress to free delivery"
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={progress}
               >
-                <img
-                  src={`http://localhost:3333${item.product.image}`}
-                  alt={item.product.title}
-                  className={styles.itemImage}
-                />
+                <span className={styles.progressBar} style={{ width: `${progress}%` }} />
               </div>
-
-              <div className={styles.itemDetails}>
-                <Link to={`/products/${item.product.id}`} className={styles.itemTitleLink}>
-                  <h3 className={styles.itemTitle}>{item.product.title}</h3>
-                </Link>
-                <div className={styles.priceAndQuantityContainer}>
-                  <div className={styles.quantityControl}>
-                    <button
-                      onClick={() => handleDecreaseQuantity(item.product.id)}
-                      className={styles.quantityButton}
-                    >
-                      -
-                    </button>
-                    <span className={styles.itemQuantity}>{item.quantity}</span>
-                    <button
-                      onClick={() => handleIncreaseQuantity(item.product)}
-                      className={styles.quantityButton}
-                    >
-                      +
-                    </button>
-                  </div>
-                  <div className={styles.itemPriceSection}>
-                    {item.product.discont_price ? (
-                      <>
-                        <p className={styles.itemDiscountPrice}>${item.product.discont_price.toFixed(2)}</p>
-                        <p className={styles.itemOriginalPriceStrikethrough}>${item.product.price.toFixed(2)}</p>
-                      </>
-                    ) : (
-                      <p className={styles.itemPrice}>${item.product.price.toFixed(2)}</p>
-                    )}
-                  </div>
-                </div>
-              </div>
-              <button
-                onClick={() => handleRemoveItem(item.product.id)}
-                className={styles.removeButton}
-              >
-                &times;
-              </button>
             </div>
-          ))}
+
+            <div className={`${styles.totalRow} ${styles.grandTotal}`}>
+              <span>Total</span>
+              <span>{formatPrice(totalAmount)}</span>
+            </div>
+
+            <div className={styles.checkout}>
+              <h3 className={styles.checkoutTitle}>Contact details</h3>
+              <p className={styles.checkoutText}>A manager will call you to confirm the details.</p>
+              <ContactForm
+                submitLabel="Place order"
+                submittingLabel="Placing order…"
+                submitVariant="accent"
+                onSubmit={placeOrder}
+              />
+            </div>
+          </aside>
         </div>
-
-        <div className={styles.orderDetailsContainer}>
-          <h2 className={styles.orderDetailsTitle}>Order details</h2>
-
-          <div className={styles.orderDetailsSummary}>
-            <p className={styles.summaryText}>
-                {cartItems.reduce((acc, item) => acc + item.quantity, 0)} items
-            </p>
-            <p className={styles.summaryTotalPrice}>
-                <span className={styles.summaryTextTotal}> Total </span>
-                <span className={styles.summaryTotalValue}>${totalAmount.toFixed(2)}</span>
-            </p>
-          </div>
-
-          <form onSubmit={handleOrderSubmit} className={styles.orderForm}>
-            <input type="text" name="name" placeholder="Name" className={styles.orderFormInput} required />
-            <input type="tel" name="phone" placeholder="Phone number" className={styles.orderFormInput} required />
-            <input type="email" name="email" placeholder="Email" className={styles.orderFormInput} required />
-            <button
-              type="submit"
-              className={`${styles.orderSubmitButton} ${orderPlaced ? styles.orderPlacedButton : ''}`}
-              disabled={orderPlaced}
-            >
-              {orderPlaced ? 'The Order Is Placed' : 'Order'}
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
+      </Container>
+      {modal}
+    </>
   );
 };
 

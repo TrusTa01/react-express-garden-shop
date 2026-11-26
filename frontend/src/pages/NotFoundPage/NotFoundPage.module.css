@@ -1,55 +1,67 @@
-.notFoundPage {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.wrapper {
+  padding-block: var(--space-12) var(--space-4);
+}
+
+.card {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-4);
+  padding: var(--space-12) var(--space-6);
+  border-radius: 20px;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
   text-align: center;
-  padding: 40px 20px;
 }
 
-.statusCodeImageContainer {
-  width: 400px;
-  height: 250px;
-  background-image: url('../../assets/images/404.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  margin-bottom: 20px;
-}
-
-.message {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--color-black);
-  margin-bottom: 15px;
-}
-
-.description {
-  font-size: 1.2rem;
-  line-height: 1.6;
-  max-width: 600px;
-  margin-bottom: 30px;
-  color: var(--color-light-gray);
-}
-
-.homeButton {
-  display: inline-block;
-  background-color: var(--color-primary-green);
-  color: var(--color-text-light);
-  padding: 15px 30px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-size: 1.1rem;
+.code {
+  color: var(--color-green);
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-size: clamp(6rem, 4rem + 10vw, 12rem);
   font-weight: 600;
-  transition: background-color 0.3s ease, transform 0.1s ease;
-  cursor: pointer;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+}
 
-  &:hover {
-    background-color: var(--color-primary-green); 
-    transform: translateY(-2px);
+/* The middle zero in vermilion: decorative, hidden from assistive tech. */
+.zero {
+  color: var(--color-accent);
+}
+
+.title {
+  font-size: var(--text-4xl);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.text {
+  max-width: 44ch;
+  color: var(--color-text-muted);
+  font-size: var(--text-lg);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+@media (max-width: 599px) {
+  .wrapper {
+    padding-block: var(--space-6) 0;
   }
 
-  &:active {
-    transform: translateY(0);
+  .card {
+    padding: var(--space-10) var(--space-5);
+  }
+
+  .actions {
+    align-self: stretch;
+  }
+
+  .actions > * {
+    flex: 1 1 100%;
   }
 }

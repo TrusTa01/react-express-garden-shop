@@ -1,49 +1,96 @@
-.categoryCard {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  background-color: var(--color-text-light);
-  border-radius: 13px;
+.tile {
+  --color-focus: var(--color-accent-strong);
+  position: relative;
+  display: block;
+  aspect-ratio: 3 / 4;
   overflow: hidden;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  padding-bottom: 15px;
+  border-radius: 16px;
+  background: var(--color-green);
+  color: var(--color-white);
   text-decoration: none;
-  color: inherit;
 }
 
-.categoryCard:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.imageWrapper {
-  width: 80%;
-  height: 320px;
-  overflow: hidden;
-  margin-bottom: 15px;
-  border-radius: 9px;
-}
-
-.categoryImage {
+.image {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  transition: transform 600ms var(--ease);
 }
 
-.imageWrapper:hover .categoryImage {
+/* Bottle-green scrim keeps the white name readable on any photo. */
+.tile::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgb(10 39 30 / 0.92) 0%, rgb(10 39 30 / 0.5) 36%, rgb(10 39 30 / 0) 62%);
+}
+
+.text {
+  position: absolute;
+  left: var(--space-5);
+  right: calc(var(--space-5) + 44px);
+  bottom: var(--space-5);
+  z-index: 1;
+  display: grid;
+  gap: 2px;
+}
+
+.name {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-size: clamp(1.375rem, 1.1rem + 0.8vw, 2rem);
+  font-weight: 600;
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 6px;
+  transition: text-decoration-color var(--duration-base) var(--ease);
+}
+
+.count {
+  color: var(--color-bone);
+  font-size: var(--text-sm);
+}
+
+/* Round vermilion arrow: an icon, so only the 3:1 non-text contrast applies. */
+.arrow {
+  position: absolute;
+  right: var(--space-4);
+  bottom: var(--space-5);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  color: var(--color-white);
+  transition: transform var(--duration-base) var(--ease);
+}
+
+.tile:hover .image {
   transform: scale(1.05);
 }
 
-.categoryTitle {
-  font-size: 1.1em;
-  font-weight: 600;
-  color: var(--color-text-dark);
-  padding: 0 10px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
+.tile:hover .name {
+  text-decoration-color: var(--color-accent);
+}
+
+.tile:hover .arrow {
+  transform: translateX(3px);
+}
+
+@media (max-width: 599px) {
+  .text {
+    left: var(--space-3);
+    right: var(--space-3);
+    bottom: var(--space-3);
+  }
+
+  .arrow {
+    display: none;
+  }
 }

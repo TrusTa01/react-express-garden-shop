@@ -1,0 +1,47 @@
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--control-height);
+  height: var(--control-height);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-green);
+}
+
+.button:hover:not(:disabled) {
+  background: var(--color-green-tint);
+}
+
+.button:disabled {
+  color: var(--color-border-strong);
+  cursor: not-allowed;
+}
+
+.value {
+  min-width: 2.5ch;
+  text-align: center;
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+.lg .button {
+  width: 52px;
+  height: 52px;
+}
+
+.lg .value {
+  min-width: 3ch;
+  font-size: var(--text-lg);
+}

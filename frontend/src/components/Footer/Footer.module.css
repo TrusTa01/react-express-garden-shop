@@ -1,74 +1,183 @@
-.footerContent {
-  max-width: var(--max-content-width); /* Общая максимальная ширина */
-  margin: 0 auto; /* Центрируем содержимое футера */
-  padding: 0 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 40px;
-  box-sizing: border-box;
+.footer {
+  --color-focus: var(--color-focus-inverse);
+  margin-top: var(--section-gap);
+  border-top: 6px solid var(--color-accent);
+  background: var(--color-green);
+  color: var(--color-bone);
 }
 
-.contactInfoWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
+.footer a {
+  color: var(--color-bone);
 }
 
-.footerTitle {
-  font-size: 45px;
-  font-weight: 700;
-  margin: 40px 45px 20px 45px;
-}
-
-.infoGrid {
+.grid {
   display: grid;
-  grid-template-columns: 5fr 4fr; /* неравные колонки */
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-inline: 45px;
+  grid-template-columns: 1.3fr 0.8fr 1.2fr 1.6fr;
+  gap: var(--space-8);
+  padding-block: var(--space-16) var(--space-12);
 }
 
-.contactItem {
-  background-color: #c9cbcc; 
-  padding: 20px;
-  border-radius: 8px;
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--control-height);
+  color: var(--color-bone);
+  text-decoration: none;
 }
 
-.contactItemTitle {
-  font-size: 20px;
+/* Inverted mark: bone disc, green leaf. */
+.logo svg {
+  color: inherit;
+  --color-bone: var(--color-green);
+}
+
+.logoText {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-size: 2rem;
   font-weight: 600;
-  color: var(--color-light-gray);
-  margin-bottom: 10px;
+  letter-spacing: -0.02em;
+  line-height: 1;
 }
 
-.contactItemText {
-  font-size: 35px;
-  font-weight: 600;
-  line-height: 1.5;
-  color: var(--light-gray);
+.tagline {
+  margin-top: var(--space-3);
+  max-width: 32ch;
+  color: var(--color-green-soft);
+  font-size: var(--text-sm);
 }
 
-.socialIcons {
+.socials {
   display: flex;
-  gap: 15px;
-  margin-top: 10px;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
 }
 
-.socialIcon {
-  transition: color 0.3s ease;
+.social {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-height);
+  padding: 0 var(--space-4);
+  border: 1px solid rgb(239 231 218 / 0.35);
+  border-radius: var(--radius-pill);
+  font-weight: var(--weight-medium);
+  text-decoration: none;
+  transition:
+    background-color var(--duration-fast) var(--ease),
+    color var(--duration-fast) var(--ease);
 }
 
-.mapContainer {
- margin: 0 45px 80px 45px;
-  height: 350px;
-  border-radius: 8px;
+.social:hover {
+  background: var(--color-bone);
+  color: var(--color-green);
+}
+
+.heading {
+  margin-bottom: var(--space-3);
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-bone);
+}
+
+.links a {
+  display: inline-flex;
+  align-items: center;
+  min-width: var(--control-height);
+  min-height: var(--control-height);
+  text-decoration: none;
+}
+
+.links a:hover,
+.contacts a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+
+.contacts {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.contacts li {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  line-height: 1.4;
+}
+
+.contacts svg {
+  flex-shrink: 0;
+  margin-top: 1px;
+  color: var(--color-green-soft);
+}
+
+.contacts a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--control-height);
+  margin-top: -12px;
+  text-decoration: none;
+}
+
+.map {
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-
+  min-height: 220px;
+  border-radius: var(--radius-lg);
+  background: var(--color-green-hover);
 }
 
-.mapContainer iframe {
+.map iframe {
+  display: block;
   width: 100%;
   height: 100%;
+  min-height: 220px;
   border: 0;
+}
+
+.bottom {
+  border-top: 1px solid rgb(239 231 218 / 0.15);
+  font-size: var(--text-sm);
+  color: var(--color-green-soft);
+}
+
+.bottomInner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding-block: var(--space-5);
+}
+
+@media (max-width: 1199px) {
+  .grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .map {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 899px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 599px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+    padding-block: var(--space-10);
+  }
 }

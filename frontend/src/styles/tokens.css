@@ -1,0 +1,126 @@
+/*
+ * Design tokens: the only place where colours, spacing, radii, shadows,
+ * breakpoints and z-index values are defined. Modules use var(--…) only.
+ *
+ * Brand palette (owner-given):
+ *   Bottle Green #0F372B — primary
+ *   Bone         #EFE7DA — warm light surfaces
+ *   Vermilion    #E8392B — THE accent: primary CTAs, badges, promo band
+ * Contrast (WCAG 2.x): text #1A2B24 on bone 12.1:1; muted #56615B on bone
+ * 5.3:1; white on green 13.1:1.
+ * White on vermilion is 4.16:1 -> only large text (>= 18.66px bold or 24px):
+ * accent buttons and badges use 19px/700 labels. For small text on light
+ * surfaces use --color-accent-strong (#C62D20: 5.5:1 on white, 4.5:1 on bone).
+ */
+:root {
+  /* Brand */
+  --color-green: #0f372b;
+  --color-green-hover: #1b4d3d;
+  --color-green-active: #0a271e;
+  --color-green-tint: #e3ece7;
+  --color-green-soft: #b8cfc4;
+
+  --color-bone: #efe7da;
+  --color-bone-soft: #f8f4ee;
+  --color-bone-dark: #e2d6c3;
+
+  --color-sale: #e8392b;
+  --color-sale-strong: #c62d20;
+  --color-sale-tint: #fdecea;
+  --color-accent: #e8392b;
+  --color-accent-hover: #c62d20;
+  --color-accent-strong: #c62d20;
+  /* Derived vermilion for surfaces that carry SMALL white text (sale band,
+     active page, pill badges): white on #D9352A is 4.67:1. */
+  --color-accent-deep: #d9352a;
+  --color-accent-tint: #fbe3df;
+
+  /* Neutrals derived from the brand */
+  --color-white: #ffffff;
+  --color-text: #1a2b24;
+  --color-text-muted: #56615b;
+  --color-text-inverse: #ffffff;
+  --color-border: #e4e0d8;
+  --color-border-strong: #7a847e; /* 3.9:1 on white: form control outlines */
+  --color-surface: #ffffff;
+  --color-page: #efe7da; /* bone */
+  --color-overlay: rgb(10 39 30 / 0.55);
+  --color-success: #1f6b4a;
+  --color-success-tint: #e3f1ea;
+  --color-error: #b42318;
+  --color-error-tint: #fdecea;
+  --color-focus: #2f7d5f; /* on white/bone surfaces */
+  --color-focus-inverse: #efe7da; /* on bottle-green surfaces: 10.7:1 */
+
+  /* Typography */
+  --font-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Arial,
+    sans-serif;
+  --font-serif: 'Fraunces Variable', 'Fraunces', Georgia, 'Times New Roman', serif;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: clamp(1.75rem, 1.4rem + 1.2vw, 2.25rem);
+  --text-4xl: clamp(2rem, 1.4rem + 2.6vw, 3.25rem);
+  --text-display: clamp(2.5rem, 1.2rem + 5vw, 5rem);
+  --text-label-lg: 1.1875rem; /* 19px: white-on-vermilion labels must be >= 18.66px bold */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --leading-tight: 1.2;
+  --leading-normal: 1.55;
+
+  /* Spacing scale (4px base) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --section-gap: clamp(2.5rem, 2rem + 2.5vw, 4.5rem);
+
+  /* Layout */
+  --container-max: 1280px;
+  --gutter: clamp(1rem, 0.6rem + 1.8vw, 2rem);
+  --header-height: 72px;
+  --control-height: 44px;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgb(15 55 43 / 0.06);
+  --shadow-md: 0 4px 14px rgb(15 55 43 / 0.08);
+  --shadow-lg: 0 18px 40px rgb(15 55 43 / 0.18);
+
+  /* Motion */
+  --duration-fast: 150ms;
+  --duration-base: 250ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+
+  /* Z-index */
+  --z-header: 100;
+  --z-drawer: 200;
+  --z-modal: 300;
+  --z-toast: 400;
+
+  /*
+   * Breakpoints (max-width queries use the value minus 1px). @media cannot
+   * read custom properties, so modules repeat these literal values.
+   */
+  --bp-sm: 600px; /* phones: 2-column grids, stacked actions */
+  --bp-md: 768px; /* product grid 3 -> 2 columns */
+  --bp-lg: 900px; /* desktop nav and sidebars appear */
+  --bp-xl: 1024px; /* cart summary moves beside the items */
+  --bp-2xl: 1200px; /* 4-column product grid, wide footer */
+}

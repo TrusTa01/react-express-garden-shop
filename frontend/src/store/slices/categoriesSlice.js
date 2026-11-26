@@ -1,44 +1,35 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { getJson } from '../../config/api';
 
-// Асинхронный thunk для получения всех категорий
 export const fetchCategories = createAsyncThunk(
-  "categories/fetchCategories",
+  'categories/fetchCategories',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await fetch("http://localhost:3333/categories/all");
-      if (!response.ok) {
-        throw new Error("Failed to fetch categories.");
-      }
-      const data = await response.json();
-      return data;
+      return await getJson('/categories/all');
     } catch (error) {
-      // Возвращаем ошибку, чтобы она была доступна в rejected состоянии
       return rejectWithValue(error.message);
     }
-  }
+  },
+  { condition: (_, { getState }) => getState().categories.status !== 'loading' },
 );
 
 const categoriesSlice = createSlice({
-  name: "categories",
-  initialState: {
-    list: [], // Здесь будут храниться категории
-    status: "idle",
-    error: null,
-  },
+  name: 'categories',
+  initialState: { list: [], status: 'idle', error: null },
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchCategories.pending, (state) => {
-        state.status = "loading";
+        state.status = 'loading';
         state.error = null;
       })
       .addCase(fetchCategories.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.list = action.payload; // Записываем полученные категории
+        state.status = 'succeeded';
+        state.list = action.payload;
       })
       .addCase(fetchCategories.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.payload || "Failed to fetch categories";
+        state.status = 'failed';
+        state.error = action.payload || 'Could not load categories';
       });
   },
 });

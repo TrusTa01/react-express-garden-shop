@@ -1,0 +1,111 @@
+.header {
+  margin-bottom: var(--space-8);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-6);
+  padding-block: var(--space-2) var(--space-6);
+  border-bottom: 1px solid var(--color-bone-dark);
+}
+
+.heading {
+  min-width: 0;
+  max-width: 46rem;
+}
+
+.title {
+  font-size: var(--text-4xl);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+
+.text {
+  margin-top: var(--space-3);
+  max-width: 60ch;
+  color: var(--color-text-muted);
+  font-size: var(--text-lg);
+}
+
+.meta {
+  flex-shrink: 0;
+  padding: var(--space-1) var(--space-4);
+  border: 1px solid var(--color-bone-dark);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+}
+
+/*
+ * Sale: full-width vermilion band. Small white text needs the derived shade
+ * (--color-accent-deep, 4.67:1); the breadcrumb colours are re-pointed locally.
+ */
+.sale {
+  --color-text: var(--color-white);
+  --color-text-muted: var(--color-white);
+  --color-green: var(--color-white);
+  --color-focus: var(--color-white);
+  position: relative;
+  overflow: hidden;
+  padding-bottom: var(--space-4);
+  background: var(--color-accent-deep);
+  color: var(--color-white);
+}
+
+/* Large soft "%" mark: decorative only. */
+.sale::after {
+  content: '%';
+  position: absolute;
+  right: max(var(--gutter), calc((100% - var(--container-max)) / 2 + var(--gutter)));
+  top: 50%;
+  font-family: var(--font-serif);
+  font-size: clamp(8rem, 5rem + 9vw, 15rem);
+  font-weight: 600;
+  line-height: 1;
+  color: rgb(255 255 255 / 0.14);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.sale .row {
+  position: relative;
+  z-index: 1;
+  border-bottom: 0;
+  padding-bottom: var(--space-8);
+}
+
+.sale .title {
+  font-size: var(--text-display);
+}
+
+.sale .text {
+  font-weight: var(--weight-medium);
+}
+
+.sale .meta {
+  margin-right: clamp(0rem, 6vw, 7rem);
+  border-color: var(--color-white);
+  background: var(--color-white);
+  color: var(--color-accent-strong);
+}
+
+@media (max-width: 599px) {
+  .header {
+    margin-bottom: var(--space-5);
+  }
+
+  .row {
+    padding-bottom: var(--space-5);
+  }
+
+  .text {
+    font-size: var(--text-base);
+  }
+}
