@@ -14,6 +14,8 @@
 
 Learning project · catalog data and photos are demo content
 
+**English** · [Русский](README.ru.md)
+
 </div>
 
 ## Demo
