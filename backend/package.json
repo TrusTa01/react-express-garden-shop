@@ -4,7 +4,7 @@
   "private": true,
   "description": "REST API for the Garden Shop storefront: catalogue, orders and discount requests",
   "author": "Yuriy Borovikov",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "type": "module",
   "main": "src/server.js",
   "engines": {
