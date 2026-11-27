@@ -4,8 +4,6 @@
 
 **An online garden store: a React storefront and an Express API on SQLite. Catalog with filters, product pages, cart and checkout, plus a static demo on GitHub Pages.**
 
-<a href="https://trusta01.github.io/react-express-garden-shop/"><img src="docs/demo-button.svg" width="240" alt="Open live demo"/></a>
-
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev)
 [![Redux Toolkit](https://img.shields.io/badge/Redux_Toolkit-2-764ABC?logo=redux&logoColor=white)](https://redux-toolkit.js.org)
 [![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vite.dev)
@@ -20,9 +18,7 @@ Learning project · catalog data and photos are demo content
 
 ## Demo
 
-**[trusta01.github.io/react-express-garden-shop](https://trusta01.github.io/react-express-garden-shop/)**
-
-The demo has no server behind it: the catalog is served as static JSON (see [How the demo is built](#how-the-demo-is-built)). Everything works except sending: orders and coupon requests go nowhere, and the checkout window says so.
+<a href="https://trusta01.github.io/react-express-garden-shop/"><img src="docs/demo-button.svg" width="240" alt="Open live demo"/></a>
 
 ## Screenshots
 
