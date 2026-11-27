@@ -4,12 +4,12 @@
 
 **An online garden store: a React storefront and an Express API on SQLite. Catalog with filters, product pages, cart and checkout, plus a static demo on GitHub Pages.**
 
-<a href="https://trusta01.github.io/react-express-garden-shop/"><img src="https://img.shields.io/badge/Open%20live%20demo-%E2%86%92-E8392B?style=for-the-badge" height="44" alt="Open live demo"/></a>
+<a href="https://trusta01.github.io/react-express-garden-shop/"><img src="docs/demo-button.svg" width="240" alt="Open live demo"/></a>
 
 [![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)](https://react.dev)
 [![Redux Toolkit](https://img.shields.io/badge/Redux_Toolkit-2-764ABC?logo=redux&logoColor=white)](https://redux-toolkit.js.org)
 [![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white)](https://vite.dev)
-[![Express](https://img.shields.io/badge/Express-5-000000?logo=express&logoColor=white)](https://expressjs.com)
+[![Express](https://img.shields.io/badge/Express-5-404D59?logo=express&logoColor=white)](https://expressjs.com)
 [![SQLite](https://img.shields.io/badge/SQLite-node%3Asqlite-003B57?logo=sqlite&logoColor=white)](https://nodejs.org/api/sqlite.html)
 [![Tests](https://img.shields.io/badge/backend%20tests-35%20passing-success)](#testing)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
